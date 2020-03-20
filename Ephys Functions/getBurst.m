@@ -88,7 +88,7 @@ for n = 1:burstNum
 end
 
 burst.num   = burstNum;
-burst.prop  = sum(allBurstSpikes)/(1+length(ISI)); 
+burst.prop  = sum(allBurstSpikes)/length(st); 
 burst.muDur = mean(allBurstDur); 
 burst.muSpk = mean(allBurstSpikes); 
 burst.muIBI = mean(allIBI);      
