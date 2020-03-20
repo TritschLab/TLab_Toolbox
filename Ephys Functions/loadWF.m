@@ -22,9 +22,10 @@ function WF = loadWF(data,datPath,varargin)
 
 %
 % Pull General Information
-Fs = data.acq.Fs;
-datName = data.acq.datName;
-nChan = data.acq.nChan;
+Fs = data.gen.Fs;
+datName = data.gen.datName;
+nChan = data.gen.nChan;
+clusters = data.clusters;
 
 % Pull WF params
 switch nargin
@@ -47,7 +48,6 @@ nBytes = numel(typecast(cast(0,'int16'),'uint8'));
 nSamp = datStruct.bytes/(nChan*nBytes);
 dataMap = memmapfile(datFF, 'Format', {'int16', [nChan nSamp], 'dat'});
 
-clusters = data.clusters;
 nClu = length(clusters);
 WF(1:nClu) = struct('top',zeros(wfDur,nWF),'topMu',zeros(wfDur,1),'topSem',zeros(wfDur,1),'time',zeros(wfDur,1));
 
