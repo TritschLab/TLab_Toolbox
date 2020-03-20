@@ -22,7 +22,7 @@ function WF = loadWF(data,datPath,varargin)
 
 %
 % Pull General Information
-Fs = data.gen.Fs;
+Fs = data.gen.acqFs;
 datName = data.gen.datName;
 nChan = data.gen.nChan;
 clusters = data.clusters;
