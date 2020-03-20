@@ -28,7 +28,7 @@ burst       = {};
 bprop       = {};
 
 stAll = {clusters.spikeTimes}; %Extract all spike times into cell array
-stLast = cellfun(@(x) x(end), stAll); %Vector of last spike for each unit, in seconds
+lastSt = cellfun(@(x) x(end), stAll); %Vector of last spike for each unit, in seconds
 stLast = max(lastSt); %Time of last spike over all units, in seconds 
 
 %% Temporal Properties
