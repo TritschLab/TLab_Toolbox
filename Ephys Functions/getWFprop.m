@@ -213,8 +213,8 @@ function [out] = waveformPropHelper(x,waveform,time,varargin)
     [~,halfIdx2] = min(abs(waveform(minIdx:maxIdx2)-halfMax));  halfIdx2 = halfIdx2+minIdx-1;
     
 %% Calculate parameters: half-width, peak-latency, amplitude, asymmetry
-    % halfWidth (us) - width of spike at half maximal amplitude
-    % peakLatency (us) - time from max deflection to second max
+    % halfWidth (ms) - width of spike at half maximal amplitude
+    % peakLatency (ms) - time from max deflection to second max
     % amplitude (uV) - voltage difference between max deflection and second max
     % asymmetry - ratio of amplitude of second max and first max
     % paramIdx = idx used 
