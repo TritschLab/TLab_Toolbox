@@ -44,10 +44,11 @@ function [fig] = plotwfisi(data, varargin)
         n = plotme(x);
         
         spwf(x) = subplot(spM, spN, (x*spN)-1);
-            unitWF = data.WF(n).topMu; unitWFsem = data.WF(n).topSem; %pull from data structure
-            shadederrbar(data.WF(n).time,unitWF,unitWFsem,'k'); %plot average and stdev of waveform from max channel
-            title(sprintf('unit #%d - WF',n));  ylabel('Amp (uV)');
-            xlim([-2 2])
+            [z_wf, mu] = zscore(data.WF(n).top); 
+            z_wfsem = data.WF(n).topSem./mu; %pull from data structure
+            shadederrbar(data.WF(n).time, z_wf, z_wfsem, 'k'); %plot average and stdev of waveform from max channel
+            title(sprintf('unit #%d - WF',n));  ylabel('Amp (SD)');
+            xlim([-3 3])
 
         spisi(x) = subplot(spM, spN, (x*spN));
             unitISI = data.spk(n).ISI; %pull from data structure

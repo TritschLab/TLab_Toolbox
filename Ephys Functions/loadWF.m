@@ -32,7 +32,7 @@ switch nargin
     case 3
         params = varargin{1}; wfWin = params.WF.window; nWF = params.WF.nToRead;
     case 2
-        wfWin = [-3 3]; % Default: read waveform 3s before and after spike 
+        wfWin = [-3.5 3.5]; % Default: read waveform 3s before and after spike 
         nWF = 100; % Default: read 100 random waveforms 
 end
 
@@ -77,8 +77,8 @@ for n = 1:nClu
         end
         tmpWF(m,:) = double(dataMap.Data.dat(maxChan,[ind1:ind2])); %Store waveforms in temp matrix
     end
-    WF(n).top = tmpWF(randInd,:); WF(n).top = WF(n).top';%Extract random waveform
-    WF(n).topMu = mean(tmpWF,1); WF(n).topMu = WF(n).topMu(:); %Extract mean waveform from all spikes
+    WF(n).topAll = tmpWF(randInd,:); WF(n).top = WF(n).top';%Extract random waveform
+    WF(n).top = mean(tmpWF,1); WF(n).topMu = WF(n).topMu(:); %Extract mean waveform from all spikes
     WF(n).topSem = SEM(tmpWF,1); WF(n).topSem = WF(n).topSem(:); %Extract standard error of mean from all spikes
     WF(n).time = wfTime;
     waitbar(n/nClu,h);

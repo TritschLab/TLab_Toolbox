@@ -65,8 +65,8 @@ for n = 1:nClu
         end
         tmpWF(m,:) = double(dataMap.Data.dat(maxChan,[ind1:ind2])); %Store waveforms in temp matrix
     end
-    WF(n).top = tmpWF(randInd,:); %Extract random waveform
-    WF(n).topMu = mean(tmpWF,1); %Extract mean waveform from all spikes
+    WF(n).topAll = tmpWF(randInd,:); %Extract random waveform
+    WF(n).top = mean(tmpWF,1); %Extract mean waveform from all spikes
     WF(n).topSem = SEM(tmpWF,1); %Extract standard error of mean from all spikes
     WF(n).time = wfTime;
     fprintf('Loaded Waveform for Cluster %d.... Completed %d out of %d\n',clustID,n,nClu);

@@ -42,18 +42,20 @@ yVal = zeros(length(WF),4);
 
 %% AUTOMATIC PROCESSING
 fprintf('\n Waveform automatic processing - '); 
-fig = figure; set(fig,'Position',get(0,'Screensize'))
+fig = figure; 
+fig.Position = [1 41 2560 1323]; %set(fig,'Position',get(0,'Screensize'))
 plotM = floor(sqrt(length(units))); plotN = ceil(length(units)/plotM);
 
 for z = 1:length(units) 
     n = units(z);   
-    waveform = WF(n).topMu; %Extract this unit's waveform from WF structure
+    waveform = WF(n).top; %Extract this unit's waveform from WF structure
     time = WF(n).time; 
     %% Plot waveform for each unit
     sp(z) = subplot(plotM,plotN,z); hold on
         h1 = plot(waveform,'k'); %Plot waveform
         title(['unit #',num2str(n),' - waveform']); 
         xlabel('index'); ylabel('amplitude (uV)'); 
+        xlim([1 length(waveform)]); 
         
     %% Automatically select boundaries    
     [~,minI] = min(waveform); %Find index of point of maximum deflection
@@ -106,10 +108,11 @@ if ~isempty(adj)
         
         %% Manually select boundaries 
         fig = figure; hold on;
-            set(fig,'Position',get(0,'Screensize'));
+            fig.Position = [1 41 2560 1323]; %set(fig,'Position',get(0,'Screensize'));
             h1 = plot(waveform,'k'); %Plot waveform, will be used for ginput
             title(['unit #',num2str(n),' - (4x) boundaries for 1st max, min, 2nd max']);
-            ylabel('amplitude (uV)'); xlabel('index');
+            ylabel('amplitude (uV)'); xlabel('index'); 
+            xlim([1 length(waveform)]); 
             
         choice = 1;
         while choice == 1 %continue adjusting window until peaks look correct
@@ -128,7 +131,7 @@ if ~isempty(adj)
             h3 = scatter(halfIdx, halfVal, 'filled', 'r'); 
             h4 = scatter(minIdx, minVal, 'filled', 'g');
             h5 = scatter(maxIdx, maxVal, 'filled', 'b');
-            xlim([X(1) X(4)])
+            xlim([1 length(waveform)]); 
             
             [choice] = menu(['WF boundaries good for unit(',num2str(n),')'],'GO','DONE','SKIP','EXIT');
             delete(h2); delete(h3); delete(h4); delete(h5);
