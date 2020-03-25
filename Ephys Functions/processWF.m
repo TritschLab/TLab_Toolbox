@@ -48,7 +48,7 @@ plotM = floor(sqrt(length(units))); plotN = ceil(length(units)/plotM);
 
 for z = 1:length(units) 
     n = units(z);   
-    waveform = WF(n).top; %Extract this unit's waveform from WF structure
+    waveform = WF(n).topMu; %Extract this unit's waveform from WF structure
     time = WF(n).time; 
     %% Plot waveform for each unit
     sp(z) = subplot(plotM,plotN,z); hold on
