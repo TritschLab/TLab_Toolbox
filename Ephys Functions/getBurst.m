@@ -9,7 +9,7 @@ function [burst] = getBurst(st, varargin)
 % INPUT
 %   'st' - vector of spike times for a single unit, in seconds
 %   varargin
-%       {1} 'threshold' - (*ms*) threshold ISI value, default 50ms
+%       {1} 'threshold' - threshold ISI value, default 0.05 seconds
 %       {2} 'thresSpikes' - (#) number of spikes, default 3+ spikes
 %
 % OUTPUT
@@ -28,7 +28,7 @@ function [burst] = getBurst(st, varargin)
 ISI = diff(st); % ISI: difference between successive spike times
 
 if nargin == 1
-    threshold = 50;   %(*ms*) threshold value to define bursting
+    threshold = 0.050;   %threshold value to define bursting, in seconds
     thresSpk = 3; %threshold for number of spikes necessary for burst
         %note that >3 spikes with ISI < 50 corresponds to >2 intervals between
         %spikes so we use thresSpikes-1 for finding regions of 3+ spikes
