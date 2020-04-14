@@ -1,20 +1,29 @@
-# TLab_Toolbox
-This lab contains various functions utilized by the lab to process and analyze their data
+# TLab Toolbox
 
-The Tritsch Lab Toolbox should be utilized by those interested in utilizing the same analysis functions used internally within the lab.
+## Description:
 
-Currently, the toolbox contains functions for data organization, data visualization, photometry analysis, behavioral analysis.
+This toolbox contains functions utilized by the Tritsch Lab to organize, visualize, process, and analyze data
 
-DISCLAIMER: These functions are not perfect, and they get edited to add upgrades, etc.
+Currently, this toolbox includes the functions in the following folders:
+* Data Organization
+* Data Visualization
+* Photometry
+* Behavior
+* Electrophysiology
 
-CURRENT COLLABORATORS:
+**DISCLAIMER:** These functions may contain bugs
+
+## Collaborators:
+
+* Pratik Mistry
+* Anne Krok
+
+## Issues:
+
+For issues, please contact: 
+
 Pratik Mistry
-Anne Krok
-
-ISSUES: 
-Please contact: 
-
-Pratik Mistry, pratik.mistry@nyulangone.org 
+* pratik.mistry@nyulangone.org 
 
 General Lab Email: nictlab@gmail.com
 
