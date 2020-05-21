@@ -63,7 +63,8 @@ else
         PSD = modSig.*refSig;
         sig = filtfilt(lpFilt,PSD);
     else %Signals are not in-phase compute a quadrature using reference signal shift 90 degrees
-        refSig_90 = gradient(refSig);
+        %refSig_90 = gradient(refSig);
+        refSig_90 = [diff(refSig);refSig(end)-refSig(end-1)];
         PSD_1 = modSig.*refSig;
         PSD_1 = filtfilt(lpFilt,PSD_1);
         PSD_2 = modSig.*refSig_90;
