@@ -1,4 +1,4 @@
-function [sig,filtStruct] = digitalLIA(modSig,refSig,Fs,lpCut,filtOrder)
+function [sig] = digitalLIA(modSig,refSig,freq,Fs,lpCut,filtOrder)
 %Digital Lock-In Amplifier Demodulation
 %
 %   [sig,filtStruct] = digitalLIA(modSig,refSig,Fs,lpCut,filtOrder)
@@ -22,12 +22,13 @@ function [sig,filtStruct] = digitalLIA(modSig,refSig,Fs,lpCut,filtOrder)
 %   Input:
 %   - modSig - Measured modulated signal
 %   - refSig - Measured driving signal used to drive the LED
+%   - freq - Modulation Frequency
+%   - Fs - Sampling Frequency
+%   - lpCut - Low-Pass CutOff Frequency
+%   - filtOrder - Filter Order
 %
 %   Output:
 %   - sig - "Demodulated" signal
-%   - filtStruct - A structure containing all the filter objects used in
-%   this function --> These can be used to viusalize filter magnitude,
-%   impulse, and step responses
 %
 %
 %   Author: Pratik Mistry, 2019
@@ -42,15 +43,6 @@ if (size(modSig,1) ~= size(refSig,1))
     sig = 0;
     return;
 else
-    %Bandpass filter your modulated signal to ensure that only the
-    %frequency of modulation exists --> This allows for a cleaner
-    %phase-detection
-    %bpFilt = sub_createFilter(modSig,'bandpassiir');
-    %modSig = filtfilt(bpFilt,modSig);
-    %Normalize Reference Signal and ensure the amplitude goes from +2
-    %to -2V --> This step ensures that you are maintaining the original
-    %ampltiude from the modulated photometry signal
-    refSig = refSig-min(refSig); refSig = refSig/max(refSig); refSig = (refSig-0.5)*4;
     %Check to see if user inputted an in-phase reference signal
     %Perform a cross-correlation. If maximum correlation exists at 0,
     %then the signals are in phase.
@@ -58,12 +50,29 @@ else
     phaseDiff = lag(find(x==max(x)));
     %Clear variables to free space
     clear x lag;
-    lpFilt = designfilt('lowpassiir','FilterOrder',filtOrder,'HalfPowerFrequency',lpCut,'SampleRate',Fs,'DesignMethod','butter');
+    
+    %Normalize Reference Signal and ensure the amplitude goes from +2
+    %to -2V --> This step ensures that you are maintaining the original
+    %ampltiude from the modulated photometry signal
+    refSig = refSig-min(refSig); refSig = refSig/max(refSig); 
+    refSig = refSig*4;
+    
+    bpFilt = designfilt('bandpassiir', 'FilterOrder', 6,...
+        'HalfPowerFrequency1',freq-10, 'HalfPowerFrequency2',freq+10,...
+        'SampleRate', Fs, 'Designmethod', 'butter');
+    modSig = filtfilt(bpFilt, modSig);
+   
+    lpFilt = designfilt('lowpassiir','FilterOrder',filtOrder,...
+        'HalfPowerFrequency',lpCut,'SampleRate',Fs,...
+        'DesignMethod','butter');
+    
+    modSig = modSig - mean(modSig);
+    refSig = refSig - mean(refSig);
+    
     if phaseDiff == 0 %Signals are in-phase perform standard PSD
         PSD = modSig.*refSig;
         sig = filtfilt(lpFilt,PSD);
     else %Signals are not in-phase compute a quadrature using reference signal shift 90 degrees
-        %refSig_90 = gradient(refSig);
         refSig_90 = [diff(refSig);refSig(end)-refSig(end-1)];
         PSD_1 = modSig.*refSig;
         PSD_1 = filtfilt(lpFilt,PSD_1);
@@ -71,7 +80,6 @@ else
         PSD_2 = filtfilt(lpFilt,PSD_2);
         sig = hypot(PSD_1,PSD_2);
     end
-    filtStruct = lpFilt;
 end
 
 end
@@ -102,51 +110,3 @@ else
     adjSig = orgSig;
 end
 end
-
-%This function is no longer necessary for the analysis, but is being kept
-%for record. I used it to visualize and change filter parameters for this
-%analysis method.
-
-%{
-function filterObj = sub_createFilter(sig,filtType)
-%Create Filter Object
-%
-%   filterObj = sub_createFilter(sig,filtType);
-%
-%   Description: This sub-function is **temporary** But it is designed to
-%   allow the user to create a filter and visualize the effect before
-%   implementation of the filter. This function is designed for us to get a
-%   better sense of filter properties for this type of analysis.
-%   Additionally, the function outputs the filter object necessary for
-%   filtering.
-%
-%   Input:
-%   - filtType - Type of filter to use. (ex. 'lowpassiir' or 'bandpassiir'
-%   or 'highpassiir'
-%
-%   Output:
-%   - filterObj - The final filter object to use for filtering
-    filterObj = designfilt(filtType);
-    
-    %THe following while loop will plot the filtered signal as well as the
-    %filter visualization (to visualize filter magnitude response, impulse
-    %response, and step response). If adequate the user can accept the
-    %filter, if not, the user can adjust the parameters.
-    while(1)
-        fig = figure; plot(filtfilt(filterObj,sig));
-        fvtool(filterObj);
-        choice = menu('Do you want to change filter parameters?','Yes','No');
-        if choice == 1
-            close(fig);
-            filterObj = designfilt(filtType);
-        elseif choice == 2
-            close(fig);
-            break;
-        else
-            disp('Not a valid selection: Filter will be set to most recent settings');
-            close(fig);
-            break;
-        end
-    end
-end
-%}
