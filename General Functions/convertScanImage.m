@@ -1,4 +1,5 @@
 %% Convert Scan Image Files
+% Author: Pratik
 clear all
 
 data = struct('mouse',[],'date',[],'acq',struct());
