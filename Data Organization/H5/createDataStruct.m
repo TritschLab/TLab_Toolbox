@@ -34,7 +34,7 @@ for x = 1:nTraces
     traceNames{x} = tName;
     %Following line asks the user to select the type for the trace
     choice = menu(['Select an option for trace: ',tName],'Photometry','Reference',...
-        'Wheel Encoder','Opto Pulses','Reward','Lick');
+        'Wheel Encoder','Opto Pulses','Reward','Lick','Camera Trigger');
     traceType(x) = choice;
 end
 for sweepNum = 1:nSweeps
@@ -62,6 +62,8 @@ for sweepNum = 1:nSweeps
                 data.acq(sweepNum).rew.trace = wsData.sweeps(sweepNum).allData(:,n);
             case 6
                 data.acq(sweepNum).lick.trace = wsData.sweeps(sweepNum).allData(:,n);
+            case 7
+                data.acq(sweepNum).cam.trace = wsData.sweeps(sweepNum).allData(:,n);
         end
     end
     data.acq(sweepNum).nFPchan = length(data.acq(sweepNum).FP);
