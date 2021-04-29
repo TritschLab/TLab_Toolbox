@@ -57,13 +57,13 @@ for sweepNum = 1:nSweeps
             case 3
                 data.acq(sweepNum).wheel = wsData.sweeps(sweepNum).allData(:,n);
             case 4
-                data.acq(sweepNum).opto.trace = wsData.sweeps(sweepNum).allData(:,n);
+                data.acq(sweepNum).opto = wsData.sweeps(sweepNum).allData(:,n);
             case 5
-                data.acq(sweepNum).rew.trace = wsData.sweeps(sweepNum).allData(:,n);
+                data.acq(sweepNum).rew = wsData.sweeps(sweepNum).allData(:,n);
             case 6
-                data.acq(sweepNum).lick.trace = wsData.sweeps(sweepNum).allData(:,n);
+                data.acq(sweepNum).lick = wsData.sweeps(sweepNum).allData(:,n);
             case 7
-                data.acq(sweepNum).cam.trace = wsData.sweeps(sweepNum).allData(:,n);
+                data.acq(sweepNum).cam = wsData.sweeps(sweepNum).allData(:,n);
         end
     end
     data.acq(sweepNum).nFPchan = length(data.acq(sweepNum).FP);
