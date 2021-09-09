@@ -62,7 +62,8 @@ else
         try
             save(fullfile(newPath,strtok(h5Files{n},'.')),'data');
         catch
-            save(fullfile(newPath,strtok(h5Files{n},'.')),'data','-v7.3');
+            save(fullfile(newPath,strtok(h5Files{n},'.')),'data','-v7.3'); 
+            fprintf('Saved data using MAT-file version 7.3 \n');
         end
         AN = []; expDate = []; other = []; h5Name = [];
         data = []; dataWS = [];
