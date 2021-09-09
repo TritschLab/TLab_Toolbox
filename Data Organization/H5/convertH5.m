@@ -59,7 +59,11 @@ else
         [AN,~] = strtok(other,'_');
         dataWS = extractH5_WS(fullfile(fPath,h5Files{n}));
         data = createDataStruct(dataWS,AN,expDate);
-        save(fullfile(newPath,strtok(h5Files{n},'.')),'data');
+        try
+            save(fullfile(newPath,strtok(h5Files{n},'.')),'data');
+        catch
+            save(fullfile(newPath,strtok(h5Files{n},'.')),'data','-v7.3');
+        end
         AN = []; expDate = []; other = []; h5Name = [];
         data = []; dataWS = [];
         toc
